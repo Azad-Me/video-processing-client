@@ -4,13 +4,25 @@ import imgaeProc from '../assets/imgproc.jpg';
 import vidproc from '../assets/vidproc1.jpg';
 import { useState } from 'react';
 import ImageProcess from './ImageProcess';
+import VideoProcessor from './VideoProcess';
+import RealTimeViewer from './RealTime';
 const { Meta } = Card;
 export default function Home() {
     const [loading, setLoading] = useState(true);
     const [imageProcessing, setImageProcessing] = useState(false);
+    const [videoProcessing, setVideoProcessing] = useState(false);
+    const [realTimeProcessing, setRealTimeProcessing] = useState(false);
     const handleImageProcessing = () => {
         // Handle image processing logic here
         setImageProcessing(true)
+    };
+    const handleVideoProcessing = () => {
+        // Handle video processing logic here
+        setVideoProcessing(true)
+    };
+    const handleRealTimeProcessing = () => {
+        // Handle real-time processing logic here
+        setRealTimeProcessing(true)
     };
     return (
         <div>
@@ -32,6 +44,8 @@ export default function Home() {
                         <Col span={10}>
                             <Card
                                 hoverable
+                                onClick={handleVideoProcessing}
+
                                 // style={{ width: 240 }}
                                 cover={<img className='h-48 object-cover' alt="example" src={vidproc} />}
                             >
@@ -41,6 +55,7 @@ export default function Home() {
                         <Col span={10}>
                             <Card
                                 hoverable
+                                onClick={handleRealTimeProcessing}
                                 style={{ marginTop: '16px' }}
                                 cover={<img className='h-48 object-cover' alt="example" src={vidproc} />}
                             >
@@ -66,6 +81,36 @@ export default function Home() {
                             footer={null}
                         >
                             <ImageProcess />
+                        </Modal>
+                    )
+                }
+                {
+                    videoProcessing && (
+                        <Modal
+                            title="Video Processing"
+                            width="90%"
+                            style={{ top: 40 }}
+                            bodyStyle={{ height: "80vh", overflowY: "auto" }}
+                            open={videoProcessing}
+                            onCancel={() => setVideoProcessing(false)}
+                            footer={null}
+                        >
+                            <VideoProcessor />
+                        </Modal>
+                    )
+                }
+                {
+                    realTimeProcessing && (
+                        <Modal
+                            title="Real-Time Stream Processing"
+                            width="90%"
+                            style={{ top: 40 }}
+                            bodyStyle={{ height: "80vh", overflowY: "auto" }}
+                            open={realTimeProcessing}
+                            onCancel={() => setRealTimeProcessing(false)}
+                            footer={null}
+                        >
+                            <RealTimeViewer />
                         </Modal>
                     )
                 }
