@@ -3,14 +3,19 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import "tailwindcss";
-import VideoProcess from './Components/VideoProcess';
+import Home from './Components/Home';
+import ImageProcess from './Components/ImageProcess';
+import VideoProcessor from './Components/VideoProcess';
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <VideoProcess />
+      <Home />
+      {/* <VideoProcessor />
+      <ImageProcess /> */}
+
       <p></p>
     </>
   )

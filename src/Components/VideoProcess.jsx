@@ -1,82 +1,76 @@
 import React, { useState } from "react";
-import { processFrame } from "./api/api.js";
+import { processFrame } from "./api/api";
 
-export default function VideoProcess() {
-  const [file, setFile] = useState(null);
-  const [results, setResults] = useState(null);
+function VideoProcessor() {
+  const [frames, setFrames] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-    setResults(null);
-  };
+  const handleVideoUpload = async (event) => {
+    const BASEURL = import.meta.env.VITE_BASE_URLL;
+    const file = event.target.files[0];
+    if (!file) return;
 
-  const handleUpload = async () => {
-    if (!file) return alert("Please select a file first!");
     setLoading(true);
+
+    // const formData = new FormData();
+    // formData.append("file", file);
+
     try {
-      const res = await processFrame(file);
-      setResults(res);
-    } catch (err) {
-      console.error(err);
-      alert("Processing failed");
+      const data = await processFrame(file, BASEURL, "videos/video_processing");
+
+    //   const data = await response.json();
+      setFrames(data.frames); // backend sends { frames: [ ... ] }
+    } catch (error) {
+      console.error("Error uploading video:", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
-      <div className="w-full max-w-3xl bg-white shadow-lg rounded-xl p-6">
-        <h1 className="text-2xl font-bold mb-4 text-center text-blue-600">
-          🎥 Video AI Gateway Demo
-        </h1>
+    <div className="p-4">
+      <h1 className="text-xl font-bold mb-4">Video Processing Demo</h1>
+      <input
+        type="file"
+        accept="video/*"
+        onChange={handleVideoUpload}
+        className="mb-4"
+      />
 
-        <div className="flex flex-col items-center space-y-4">
-          <input
-            type="file"
-            onChange={handleFileChange}
-            className="file:mr-4 file:py-2 file:px-4
-              file:rounded-full file:border-0
-              file:text-sm file:font-semibold
-              file:bg-blue-50 file:text-blue-700
-              hover:file:bg-blue-100"
-          />
+      {loading && <p>Processing video... please wait</p>}
 
-          <button
-            onClick={handleUpload}
-            disabled={!file || loading}
-            className={`px-6 py-2 rounded-lg text-white font-medium ${
-              loading || !file
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-500 hover:bg-blue-600"
-            }`}
-          >
-            {loading ? "Processing..." : "Upload & Process"}
-          </button>
+      {!loading && frames.length > 0 && (
+        <div className="grid grid-cols-2 gap-4">
+          {frames.map((frame, index) => (
+            <div key={index} className="border p-2 rounded shadow">
+              <h2 className="text-lg font-semibold mb-2">
+                Frame {frame.frame_index}
+              </h2>
+              <img
+                src={frame.image}
+                alt={`frame-${index}`}
+                className="w-full rounded"
+              />
+              <div className="mt-2">
+                <p className="text-sm font-bold">Detections:</p>
+                <ul className="text-sm">
+                  {frame.detections.map((det, i) => (
+                    <li key={i}>
+                      {det.class} ({(det.score * 100).toFixed(1)}%) -{" "}
+                      {JSON.stringify(det.bbox)}
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-sm font-bold mt-2">
+                  Pose: {frame.pose?.activity || "Unknown"}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
-
-        {results && (
-          <div className="mt-6 space-y-6">
-            <div>
-              <h2 className="text-xl font-semibold text-gray-800">Detection Results</h2>
-              <ul className="mt-2 list-disc list-inside space-y-1">
-                <img src={`data:image/jpeg;base64,${results.detection?.image_base64}`} alt="Processed" className="max-w-full" />
-                {results.detection?.detections?.map((d, i) => (
-                  <li key={i}>
-                    <span className="font-medium">{d.class}</span> - {Math.round(d.score * 100)}%  
-                    <span className="text-sm text-gray-500"> [BBox: {d.bbox.join(", ")}]</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h2 className="text-xl font-semibold text-gray-800">Pose Activity</h2>
-              <p className="mt-1 text-lg">{results.pose?.activity}</p>
-            </div>
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 }
+
+export default VideoProcessor;

@@ -1,8 +1,8 @@
-export async function processFrame(file) {
+export async function processFrame(file, BASEURL, endpoint) {
   const formData = new FormData();
   formData.append("file", file);
 
-  const response = await fetch("http://localhost:8000/images/process", {
+  const response = await fetch(`${BASEURL}/${endpoint}`, {
     method: "POST",
     body: formData
   });
