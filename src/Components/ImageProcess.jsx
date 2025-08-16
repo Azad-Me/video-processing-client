@@ -26,10 +26,10 @@ export default function ImageProcess() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
+    <div className="min-h-10/12 rounded-sm bg-gray-100 flex flex-col items-center p-6">
       <div className="w-full max-w-3xl bg-white shadow-lg rounded-xl p-6">
         <h1 className="text-2xl font-bold mb-4 text-center text-blue-600">
-          🎥 Video AI Gateway Demo
+          🎥 Image AI Gateway Demo
         </h1>
 
         <div className="flex flex-col items-center space-y-4">
