@@ -8,9 +8,10 @@ export default function RealTimeViewer() {
   const [lastImage, setLastImage] = useState(null);
   const [detections, setDetections] = useState([]);
   const [pose, setPose] = useState("Unknown");
+  const BASEURL = import.meta.env.VITE_WS_URL;
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000/ws"); // adjust host/port
+    const ws = new WebSocket(`wss://stream-api.azadmeshram.info/ws`); // adjust host/port
     ws.onopen = () => setConnected(true);
     ws.onclose = () => setConnected(false);
     ws.onmessage = (e) => {

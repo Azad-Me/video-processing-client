@@ -27,8 +27,8 @@ export default function Home() {
     return (
         <div>
             <div >
-                <h1 className='mb-5'>Welcome to the Media Processing App</h1>
-                <div className=' flex flex-col justify-center'>
+                <h1 className='mb-15'>Welcome to the Media Processing App</h1>
+                <div className='flex justify-center items-center flex-col'>
                     <h2 className='text-lg font-semibold mb-4 '>Select the service</h2>
                     <Row gutter={16} className='flex justify-center'>
                         <Col span={10}>

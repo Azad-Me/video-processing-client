@@ -3,7 +3,7 @@ import { processFrame } from "./api/api.js";
 import { Modal } from 'antd';
 
 export default function ImageProcess() {
-  const BASEURL = import.meta.env.VITE_BASE_URLL;
+  const BASEURL = import.meta.env.VITE_BASE_URL;
   const [file, setFile] = useState(null);
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);

@@ -6,7 +6,7 @@ function VideoProcessor() {
   const [loading, setLoading] = useState(false);
 
   const handleVideoUpload = async (event) => {
-    const BASEURL = import.meta.env.VITE_BASE_URLL;
+    const BASEURL = import.meta.env.VITE_BASE_URL;
     const file = event.target.files[0];
     if (!file) return;
 
